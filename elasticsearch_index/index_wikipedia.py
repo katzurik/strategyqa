@@ -10,13 +10,13 @@ from requests_aws4auth import AWS4Auth
 from smart_open import open
 from tqdm import tqdm
 
-def get_esclient(host, port, region=None):
+def get_esclient(host_name, port_name, region=None):
     if region is not None:
         service= 'es'
         credentials = boto3.Session().get_credentials()
         awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service)
         return Elasticsearch(
-            hosts=[{'host': host, 'port': 443}],
+            hosts=[{'host': host_name, 'port': 443}],
             http_auth=awsauth,
             use_ssl=True,
             verify_certs=True,
@@ -25,7 +25,7 @@ def get_esclient(host, port, region=None):
             timeout=60
         )
     else:
-        return Elasticsearch(hosts=[{"host": args.elasticsearch_host, "port": args.port}], retries=3, timeout=60)
+        return Elasticsearch(hosts=[{"host": host_name, "port": port_name}], retries=3, timeout=60)
 
 
 if __name__ == "__main__":
@@ -48,8 +48,12 @@ if __name__ == "__main__":
     # Document Type constant
     TYPE = "paragraph"
 
+    #host and port
+    host_name = args.elasticsearch_host
+    port_name = args.port
+
     # Get an ElasticSearch client
-    es = get_esclient()
+    es = get_esclient(host_name,port_name)
 
     mapping = '''
     {

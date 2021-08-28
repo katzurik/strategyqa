@@ -25,7 +25,7 @@ def get_esclient(host, port, region=None):
             timeout=60
         )
     else:
-        return Elasticsearch(hosts=[{"host": args.host, "port": args.port}], retries=3, timeout=60)
+        return Elasticsearch(hosts=[{"host": args.elasticsearch_host, "port": args.port}], retries=3, timeout=60)
 
 
 if __name__ == "__main__":
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # Arguments
     parser = argparse.ArgumentParser(
         description='Add paragraphs from a JSON file to an Elasticsearch index.')
-    parser.add_argument('-h', '--host', help='Elastic Search hostname')
+    parser.add_argument('-es_h', '--elasticsearch_host', help='Elastic Search hostname')
     parser.add_argument('-p', '--port', default=9200, help='Port number')
     parser.add_argument('-r', '--region', default=None, help='The region for AWS ES Host. '
                         'If set, we use AWS_PROFILE credentials to connect to the host')
